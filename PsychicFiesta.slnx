@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="PsychicFiesta.Console/PsychicFiesta.Console.csproj" />
+  <Project Path="PsychicFiesta/PsychicFiesta.csproj" />
+</Solution>
