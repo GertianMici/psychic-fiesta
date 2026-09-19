@@ -3,7 +3,7 @@ using PsychicFiesta.Pricing;
 
 namespace PsychicFiesta.Application;
 
-public interface IPriceFormulaCatalog
+public interface IPriceCatalog
 {
     /// <summary>returns the current immutable terms for rental.</summary>
     /// <exception cref="UnsupportedCategoryException">The category is not supported.</exception>
