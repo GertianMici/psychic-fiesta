@@ -20,7 +20,6 @@ public sealed class CarRentalService : ICarRentalService
         _priceCatalog = priceCatalog;
     }
 
-
     public PickupConfirmation RegisterPickup(PickupRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
