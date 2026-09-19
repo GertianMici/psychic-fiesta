@@ -4,7 +4,7 @@ Business logic for registering car pickups and returns, and pricing the rental p
 
 ## Running
 
-    dotnet run --project PsychicFiesta.Console
+    cd PsychicFiesta.Console && dotnet run
     dotnet test
 
 ## Design
