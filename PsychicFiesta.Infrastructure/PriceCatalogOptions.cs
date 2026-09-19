@@ -1,61 +1,23 @@
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using PsychicFiesta.Domain;
-using PsychicFiesta.Pricing;
-
 namespace PsychicFiesta.Infrastructure;
 
-public static class TariffConfiguration
+public sealed class PriceCatalogOptions
 {
-    private static readonly JsonSerializerOptions Options = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow
-    };
+    public const string SectionName = "PriceCatalog";
+    public RateOptions BaseRates { get; set; } = new();
+    public CategoryOptions[] Categories { get; set; } = [];
+}
 
-    public static ConfiguredPriceFormulaCatalog FromJson(string json)
-    {
-        ArgumentException.ThrowIfNullOrWhiteSpace(json);
+public sealed class RateOptions
+{
+    public decimal BaseDayRental { get; set; }
+    public decimal BaseKmPrice { get; set; }
+}
 
-        CatalogSettings configuration = JsonSerializer.Deserialize<CatalogSettings>(json, Options)
-                                        ?? throw new JsonException("A tariff catalog is required");
+public sealed class CategoryOptions
+{
+    public string Code { get; set; } = string.Empty;
+    public decimal DayFactor { get; set; }
+    public decimal KmFactor { get; set; }
 
-        if (configuration.BasRates is null || configuration.Categories is null)
-        {
-            throw new JsonException("BaseRates and categories cannot be null.");
-        }
-
-        BaseRates baseRates = configuration.BasRates.ToRates();
-
-        IEnumerable<PriceFormula> tariffs = configuration.Categories.Select(category => category is null
-            ? throw new JsonException("Category cannot be null")
-            : new PriceFormula(
-                new CarCategory(category.Code),
-                category.Rates?.ToRates() ?? baseRates,
-                category.DayFactor,
-                category.KmFactor));
-
-        return new ConfiguredPriceFormulaCatalog(tariffs);
-    }
-
-    private sealed class CatalogSettings
-    {
-        public required RateSettings BasRates { get; init; }
-        public required CategorySettings[] Categories { get; init; }
-    }
-
-    private sealed class RateSettings
-    {
-        public required decimal BaseDayRental { get; init; }
-        public required decimal BaseKmPrice { get; init; }
-        public BaseRates ToRates() => new(BaseDayRental, BaseKmPrice);
-    }
-
-    private sealed class CategorySettings
-    {
-        public required string Code { get; init; }
-        public required decimal DayFactor { get; init; }
-        public required decimal KmFactor { get; init; }
-        public RateSettings? Rates { get; init; }
-    }
+    public RateOptions? Rates { get; set; }
 }

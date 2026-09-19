@@ -5,43 +5,52 @@ using PsychicFiesta.Pricing;
 
 namespace PsychicFiesta.Infrastructure;
 
-public sealed class ConfiguredPriceFormulaCatalog : IPriceFormulaCatalog
+public sealed class ConfiguredPriceCatalog : IPriceCatalog
 {
-    private readonly FrozenDictionary<CarCategory, PriceFormula> _formulaCatalog;
+    private readonly FrozenDictionary<CarCategory, PriceFormula> _formulas;
 
-    public ConfiguredPriceFormulaCatalog(IEnumerable<PriceFormula> tariffs)
+    public ConfiguredPriceCatalog(IEnumerable<PriceFormula> formulas)
     {
-        ArgumentNullException.ThrowIfNull(tariffs);
+        ArgumentNullException.ThrowIfNull(formulas);
         Dictionary<CarCategory, PriceFormula> byCarCategory = new();
 
-        foreach (PriceFormula tariff in tariffs)
+        foreach (PriceFormula formula in formulas)
         {
-            ArgumentNullException.ThrowIfNull(tariff);
+            ArgumentNullException.ThrowIfNull(formula);
 
-            if (!byCarCategory.TryAdd(tariff.CarCategory, tariff))
+            if (!byCarCategory.TryAdd(formula.CarCategory, formula))
             {
                 throw new ArgumentException(
-                    $"The category tariff for {tariff.CarCategory} already exists.",
-                    nameof(tariffs));
+                    $"The formula for {formula.CarCategory} already exists.",
+                    nameof(formulas));
             }
         }
 
-        _formulaCatalog = byCarCategory.ToFrozenDictionary();
+        _formulas = byCarCategory.ToFrozenDictionary();
     }
 
     public PriceFormula GetFormula(CarCategory carCategory)
     {
         ArgumentNullException.ThrowIfNull(carCategory);
 
-        return !_formulaCatalog.TryGetValue(carCategory, out PriceFormula? tariff)
+        return !_formulas.TryGetValue(carCategory, out PriceFormula? formula)
             ? throw new UnsupportedCategoryException(carCategory)
-            : tariff;
+            : formula;
     }
 
-    public static ConfiguredPriceFormulaCatalog CreateDefault(BaseRates rates) => new(
-    [
-        new PriceFormula(CarCategory.SmallCar, rates, dayFactor: 1m, kmFactor: 0m),
-        new PriceFormula(CarCategory.Combi, rates, dayFactor: 1.3m, kmFactor: 1m),
-        new PriceFormula(CarCategory.Truck, rates, dayFactor: 1.5m, kmFactor: 1.5m),
-    ]);
+    public static ConfiguredPriceCatalog FromOptions(PriceCatalogOptions options)
+    {
+        ArgumentNullException.ThrowIfNull(options);
+
+        BaseRates catalogRates = ToRates(options.BaseRates);
+
+        return new ConfiguredPriceCatalog(options.Categories.Select(category => new PriceFormula(
+            new CarCategory(category.Code),
+            category.Rates is null ? catalogRates : ToRates(category.Rates),
+            category.DayFactor,
+            category.KmFactor)));
+    }
+
+    private static BaseRates ToRates(RateOptions rates) =>
+        new(rates.BaseDayRental, rates.BaseKmPrice);
 }
