@@ -1,3 +1,25 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using PsychicFiesta.Application;
+using PsychicFiesta.Demo;
+using PsychicFiesta.Infrastructure;
 
-Console.WriteLine("Hello, World!");
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+
+builder.Services.AddCarRental();
+builder.Services.AddInMemoryRentalStore();
+builder.Services.AddPriceCatalog(builder.Configuration.GetSection(PriceCatalogOptions.SectionName));
+
+builder.Services.AddOptions<PriceCatalogOptions>().ValidateOnStart();
+
+builder.Services.AddSingleton<IReceiptPresenter, ConsoleReceiptPresenter>();
+builder.Services.AddSingleton<RentalDemo>();
+
+using IHost host = builder.Build();
+
+await host.StartAsync();
+int exitCode = host.Services.GetRequiredService<RentalDemo>().Run();
+await host.StopAsync();
+
+return exitCode;
