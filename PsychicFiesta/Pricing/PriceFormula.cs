@@ -2,26 +2,26 @@ using PsychicFiesta.Domain;
 
 namespace PsychicFiesta.Pricing;
 
-public sealed record RentalTariff
+public sealed record PriceFormula
 {
     public CarCategory CarCategory { get; }
-    public RentalRates Rates { get; }
+    public BaseRates BaseRates { get; }
     public decimal DayFactor { get; }
     public decimal KmFactor { get; }
 
-    public RentalTariff(
+    public PriceFormula(
         CarCategory carCategory,
-        RentalRates rates,
+        BaseRates baseRates,
         decimal dayFactor,
         decimal kmFactor)
     {
         ArgumentNullException.ThrowIfNull(carCategory);
-        ArgumentNullException.ThrowIfNull(rates);
+        ArgumentNullException.ThrowIfNull(baseRates);
         ArgumentOutOfRangeException.ThrowIfNegative(dayFactor);
         ArgumentOutOfRangeException.ThrowIfNegative(kmFactor);
 
         CarCategory = carCategory;
-        Rates = rates;
+        BaseRates = baseRates;
         DayFactor = dayFactor;
         KmFactor = kmFactor;
     }
@@ -34,8 +34,8 @@ public sealed record RentalTariff
         ArgumentOutOfRangeException.ThrowIfLessThan(numberOfDays, 1);
         ArgumentOutOfRangeException.ThrowIfNegative(numberOfKm);
 
-        decimal dayCharge = RoundToCurrency(Rates.BaseDayRental * DayFactor * numberOfDays);
-        decimal kmCharge = RoundToCurrency(Rates.BaseKmPrice * KmFactor * numberOfKm);
+        decimal dayCharge = RoundToCurrency(BaseRates.BaseDayRental * DayFactor * numberOfDays);
+        decimal kmCharge = RoundToCurrency(BaseRates.BaseKmPrice * KmFactor * numberOfKm);
 
         return new RentalPrice(
             numberOfDays,

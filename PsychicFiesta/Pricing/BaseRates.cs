@@ -1,11 +1,11 @@
 namespace PsychicFiesta.Pricing;
 
-public sealed record RentalRates
+public sealed record BaseRates
 {
     public decimal BaseDayRental { get; }
     public decimal BaseKmPrice { get; }
 
-    public RentalRates(decimal baseDayRental, decimal baseKmPrice)
+    public BaseRates(decimal baseDayRental, decimal baseKmPrice)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(baseDayRental);
         ArgumentOutOfRangeException.ThrowIfNegative(baseKmPrice);
