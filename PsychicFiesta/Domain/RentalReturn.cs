@@ -1,5 +1,3 @@
-using PsychicFiesta.Domain;
-
-namespace PsychicFiesta.Application;
+namespace PsychicFiesta.Domain;
 
 public sealed record RentalReturn(Rental Rental, RentalReceipt  Receipt);
