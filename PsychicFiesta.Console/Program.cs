@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using PsychicFiesta.Application;
 using PsychicFiesta.Demo;
 using PsychicFiesta.Infrastructure;
@@ -15,6 +16,7 @@ builder.Services.AddOptions<PriceCatalogOptions>().ValidateOnStart();
 
 builder.Services.AddSingleton<IReceiptPresenter, ConsoleReceiptPresenter>();
 builder.Services.AddSingleton<RentalDemo>();
+builder.Logging.SetMinimumLevel(LogLevel.Warning);
 
 using IHost host = builder.Build();
 
