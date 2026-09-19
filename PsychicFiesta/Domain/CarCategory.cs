@@ -6,8 +6,8 @@ public sealed record CarCategory
 
     public CarCategory(string code)
     {
-        ArgumentNullException.ThrowIfNull(code);
-        Code = code;
+        ArgumentException.ThrowIfNullOrWhiteSpace(code);
+        Code = code.Trim().ToLowerInvariant();
     }
 
     public static CarCategory SmallCar => new CarCategory("Small-car");
