@@ -4,5 +4,7 @@ public sealed record RentalPrice(
     int RentalDays,
     int NumberOfKm,
     decimal DayCharge,
-    decimal KmCharge,
-    decimal Total);
+    decimal KmCharge)
+{
+    public decimal Total => DayCharge + KmCharge;
+}

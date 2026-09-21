@@ -40,7 +40,9 @@ public class PriceFormulaTests
     {
         RentalPrice price = TestFormulas.Truck.CalculateBreakdown(numberOfDays: 3, numberOfKm: 137);
 
-        Assert.Equal(price.DayCharge + price.KmCharge, price.Total);
+        Assert.Equal(2250m, price.DayCharge); // 500 * 1.5 * 3
+        Assert.Equal(411m, price.KmCharge);   // 2 * 1.5 * 137
+        Assert.Equal(2661m, price.Total);
     }
 
     [Fact]
