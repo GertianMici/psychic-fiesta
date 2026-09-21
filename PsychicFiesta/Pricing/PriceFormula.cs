@@ -41,8 +41,7 @@ public sealed record PriceFormula
             numberOfDays,
             numberOfKm,
             dayCharge,
-            kmCharge,
-            dayCharge + kmCharge);
+            kmCharge);
     }
 
     private static decimal RoundToCurrency(decimal amount) =>

@@ -1,4 +1,3 @@
-using PsychicFiesta.Domain;
 using PsychicFiesta.Pricing;
 
 namespace PsychicFiesta.Tests.Pricing;
@@ -41,7 +40,9 @@ public class PriceFormulaTests
     {
         RentalPrice price = TestFormulas.Truck.CalculateBreakdown(numberOfDays: 3, numberOfKm: 137);
 
-        Assert.Equal(price.DayCharge + price.KmCharge, price.Total);
+        Assert.Equal(2250m, price.DayCharge); // 500 * 1.5 * 3
+        Assert.Equal(411m, price.KmCharge);   // 2 * 1.5 * 137
+        Assert.Equal(2661m, price.Total);
     }
 
     [Fact]
@@ -74,12 +75,12 @@ public class PriceFormulaTests
     [Fact]
     public void Constructor_NegativeDayFactor_Throws()
         => Assert.Throws<ArgumentOutOfRangeException>(
-            () => new PriceFormula(CarCategory.Combi, TestFormulas.Rates, dayFactor: -1m, kmFactor: 1m));
+            () => new PriceFormula(TestCategories.Combi, TestFormulas.Rates, dayFactor: -1m, kmFactor: 1m));
 
     [Fact]
     public void Constructor_NegativeKmFactor_Throws()
         => Assert.Throws<ArgumentOutOfRangeException>(
-            () => new PriceFormula(CarCategory.Combi, TestFormulas.Rates, dayFactor: 1m, kmFactor: -1m));
+            () => new PriceFormula(TestCategories.Combi, TestFormulas.Rates, dayFactor: 1m, kmFactor: -1m));
 
     [Fact]
     public void BaseRates_NegativeDayRental_Throws()
