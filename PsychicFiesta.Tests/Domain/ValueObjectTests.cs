@@ -33,16 +33,16 @@ public class CarCategoryTests
     [InlineData("combi")]
     [InlineData("  COMBI ")]
     public void Constructor_NormalisesCaseAndWhitespace(string input)
-        => Assert.Equal(CarCategory.Combi, new CarCategory(input));
+        => Assert.Equal(TestCategories.Combi, new CarCategory(input));
 
     [Fact]
     public void EqualCodes_ShareAHashCode()
-        => Assert.Equal(CarCategory.SmallCar.GetHashCode(), new CarCategory("SMALL-CAR").GetHashCode());
+        => Assert.Equal(TestCategories.SmallCar.GetHashCode(), new CarCategory("SMALL-CAR").GetHashCode());
 
     [Fact]
     public void TheThreeCategories_AreDistinct()
     {
-        HashSet<CarCategory> categories = [CarCategory.SmallCar, CarCategory.Combi, CarCategory.Truck];
+        HashSet<CarCategory> categories = [TestCategories.SmallCar, TestCategories.Combi, TestCategories.Truck];
 
         Assert.Equal(3, categories.Count);
     }

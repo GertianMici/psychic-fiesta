@@ -19,9 +19,9 @@ internal static class TestFormulas
 
     public static BaseRates Rates => new(BaseDayRental, BaseKmPrice);
 
-    public static PriceFormula SmallCar => new(CarCategory.SmallCar, Rates, dayFactor: 1m, kmFactor: 0m);
-    public static PriceFormula Combi => new(CarCategory.Combi, Rates, dayFactor: 1.3m, kmFactor: 1m);
-    public static PriceFormula Truck => new(CarCategory.Truck, Rates, dayFactor: 1.5m, kmFactor: 1.5m);
+    public static PriceFormula SmallCar => new(TestCategories.SmallCar, Rates, dayFactor: 1m, kmFactor: 0m);
+    public static PriceFormula Combi => new(TestCategories.Combi, Rates, dayFactor: 1.3m, kmFactor: 1m);
+    public static PriceFormula Truck => new(TestCategories.Truck, Rates, dayFactor: 1.5m, kmFactor: 1.5m);
 
     public static IPriceCatalog Catalog() => new ConfiguredPriceCatalog([SmallCar, Combi, Truck]);
 

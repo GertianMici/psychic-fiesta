@@ -26,9 +26,9 @@ public class PriceCatalogOptionsTests
     {
         ConfiguredPriceCatalog catalog = ConfiguredPriceCatalog.FromOptions(Bind(Json));
 
-        Assert.Equal(1000m, catalog.GetFormula(CarCategory.SmallCar).CalculatePrice(2, 100));
-        Assert.Equal(1500m, catalog.GetFormula(CarCategory.Combi).CalculatePrice(2, 100));
-        Assert.Equal(1800m, catalog.GetFormula(CarCategory.Truck).CalculatePrice(2, 100));
+        Assert.Equal(1000m, catalog.GetFormula(TestCategories.SmallCar).CalculatePrice(2, 100));
+        Assert.Equal(1500m, catalog.GetFormula(TestCategories.Combi).CalculatePrice(2, 100));
+        Assert.Equal(1800m, catalog.GetFormula(TestCategories.Truck).CalculatePrice(2, 100));
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class PriceCatalogOptionsTests
 
         ConfiguredPriceCatalog catalog = ConfiguredPriceCatalog.FromOptions(Bind(mixedCase));
 
-        Assert.Equal(1000m, catalog.GetFormula(CarCategory.SmallCar).CalculatePrice(2, 100));
+        Assert.Equal(1000m, catalog.GetFormula(TestCategories.SmallCar).CalculatePrice(2, 100));
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class PriceCatalogOptionsTests
         ConfiguredPriceCatalog catalog = ConfiguredPriceCatalog.FromOptions(options);
 
         // 100 * 1 * 2 days + 1 * 1 * 100 km, i.e. the override rather than the 500/2 catalog rates.
-        Assert.Equal(300m, catalog.GetFormula(CarCategory.Combi).CalculatePrice(2, 100));
+        Assert.Equal(300m, catalog.GetFormula(TestCategories.Combi).CalculatePrice(2, 100));
     }
 
     [Fact]

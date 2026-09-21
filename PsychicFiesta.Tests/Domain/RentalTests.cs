@@ -16,7 +16,7 @@ public class RentalTests
 
     [Fact]
     public void PickUp_ExposesTheCategoryOfItsFormula()
-        => Assert.Equal(CarCategory.Combi, TestFormulas.OpenRental().CarCategory);
+        => Assert.Equal(TestCategories.Combi, TestFormulas.OpenRental().CarCategory);
 
     [Fact]
     public void PickUp_TrimsTheRegistrationNumber()

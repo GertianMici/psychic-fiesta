@@ -39,7 +39,7 @@ public class CarRentalServiceTests
 
         Assert.Equal(new BookingNumber("BK-1"), confirmation.BookingNumber);
         Assert.Equal("ABC123", confirmation.RegistrationNumber);
-        Assert.Equal(CarCategory.Combi, confirmation.CarCategory);
+        Assert.Equal(TestCategories.Combi, confirmation.CarCategory);
         Assert.Equal(TestFormulas.Pickup, confirmation.PickedUpAt);
         Assert.Equal(10_000, confirmation.OdometerAtPickupKm);
     }
@@ -97,7 +97,7 @@ public class CarRentalServiceTests
         RentalReceipt receipt = _service.RegisterReturn(
             new ReturnRequest("BK-9", TestFormulas.Pickup.AddDays(2), 10_500));
 
-        Assert.Equal(CarCategory.SmallCar, receipt.CarCategory);
+        Assert.Equal(TestCategories.SmallCar, receipt.CarCategory);
         Assert.Equal(1000m, receipt.Price); // 2 days x 500; the 500 km are not charged
     }
 
